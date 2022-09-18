@@ -34,10 +34,10 @@ anes20$V202267[anes20$V202267<1]<-NA
 anes20$V202268[anes20$V202268<1]<-NA
 anes20$V202269[anes20$V202269<1]<-NA
 
-anes20$V202266[anes20$V202266==3]<-NA
-anes20$V202267[anes20$V202267==3]<-NA
-anes20$V202268[anes20$V202268==3]<-NA
-anes20$V202269[anes20$V202269==3]<-NA
+anes20$V202266[anes20$V202266>2]<-NA
+anes20$V202267[anes20$V202267>2]<-NA
+anes20$V202268[anes20$V202268>2]<-NA
+anes20$V202269[anes20$V202269>2]<-NA
 
 #0-1 function
 std01<-function(x){
@@ -50,5 +50,8 @@ anes20$V202266<-std01(anes20$V202266)
 anes20$V202267<-std01(anes20$V202267)
 anes20$V202268<-std01(anes20$V202268)
 anes20$V202269<-std01(anes20$V202269)
+table(anes20$V202268)
 
+anes20$auth<-anes20$V202266+anes20$V202267+anes20$V202268+anes20$V202269
 
+##variable anes20$auth is the 0-4, 0 being fluid and 4 being fixed
