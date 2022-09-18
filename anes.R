@@ -52,6 +52,14 @@ anes20$V202268<-std01(anes20$V202268)
 anes20$V202269<-std01(anes20$V202269)
 table(anes20$V202268)
 
-anes20$auth<-anes20$V202266+anes20$V202267+anes20$V202268+anes20$V202269
+anes20$auth<-(anes20$V202266+anes20$V202267+anes20$V202268+anes20$V202269)/4
 
-##variable anes20$auth is the 0-4, 0 being fluid and 4 being fixed
+##variable anes20$auth is the 0-1, 0 being fluid and 1 being fixed
+
+#making variable PUBASST 0-1
+table(anes20$V202563)
+anes20$V202563[anes20$V202563<1]<-NA
+anes20$V202563<-std01(anes20$V202563)
+
+
+
