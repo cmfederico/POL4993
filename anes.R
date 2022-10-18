@@ -72,6 +72,20 @@ anes20$auth<-(anes20$V202266+anes20$V202267+anes20$V202268+anes20$V202269)/4
 
 ##variable anes20$auth is the 0-1, 0 being fluid and 1 being fixed
 
+## alternate coding of authoritarianism scale
+## note that will require using the ORIGINAL ANES variables, not the ones
+## recoded up above.
+anes20$rap201<-ifelse(anes20$V202266==2 & anes20$V202266>0, 1, 
+                    ifelse(anes20$V202266!=2 & anes20$V202266>0, 0, NA))
+anes20$rap202<-ifelse(anes20$V202267==2 & anes20$V202267>0, 1, 
+                    ifelse(anes20$V202267!=2 & anes20$V202267>0, 0, NA))
+anes20$rap203<-ifelse(anes20$V202268==1 & anes20$V202268>0, 1, 
+                    ifelse(anes20$V202268!=1 & anes20$V202268>0, 0, NA))
+anes20$rap204<-ifelse(anes20$V202269==2 & anes20$V202269>0, 1, 
+                    ifelse(anes20$V202269!=2 & anes20$V202269>0, 0, NA))
+psych::alpha(with(anes20, cbind(rap201, rap202, rap203, rap204)))
+anes20$rauth20<-rowMeans(with(anes20, cbind(rap201, rap202, rap203, rap204)), na.rm=TRUE)
+
 #making variable PUBASST 0-1
 table(anes20$V202563)
 anes20$V202563[anes20$V202563<1]<-NA
