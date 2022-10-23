@@ -23,6 +23,10 @@ library(interactions)
 library(corrplot)
 library(Hmisc)
 
+std01<-function(x){
+  min.x<-min(x, na.rm=T)
+  max.x<-max(x-min.x, na.rm=T)
+  return((x-min.x)/max.x)}
 
 ## demographics, 2020.
 anes20$age1<-anes20$V201507x
@@ -46,40 +50,44 @@ anes20$rhet1<-ifelse(anes20$V201601==1, 1, ifelse(anes20$V201601>0, 0, NA))
 ##anes20$V202269 is consideration vs. well-behaved
 
 #making all values that are not 1 or 2 NA
-anes20$V202266[anes20$V202266<1]<-NA
-anes20$V202267[anes20$V202267<1]<-NA
-anes20$V202268[anes20$V202268<1]<-NA
-anes20$V202269[anes20$V202269<1]<-NA
+anes20$resp1<-anes20$V202266
+anes20$manners1<-anes20$V202267
+anes20$obed1<-anes20$V202268
+anes20$behave1<-anes20$V202269
 
-anes20$V202266[anes20$V202266>2]<-NA
-anes20$V202267[anes20$V202267>2]<-NA
-anes20$V202268[anes20$V202268>2]<-NA
-anes20$V202269[anes20$V202269>2]<-NA
+table(anes20$resp1)
+table(anes20$manners1)
+table(anes20$obed1)
+table(anes20$behave1)
 
-#0-1 function
-std01<-function(x){
-  min.x<-min(x, na.rm=T)
-  max.x<-max(x-min.x, na.rm=T)
-  return((x-min.x)/max.x)
-}
-##0-1 the four auth variables
-anes20$V202266<-std01(anes20$V202266)
-anes20$V202267<-std01(anes20$V202267)
-anes20$V202268<-std01(anes20$V202268)
-anes20$V202269<-std01(anes20$V202269)
+##making all values that are not 1, 2, or 3 NA
+anes20$resp1[anes20$resp1<1]<-NA
+anes20$manners1[anes20$manners1<1]<-NA
+anes20$obed1[anes20$obed1<1]<-NA
+anes20$behave1[anes20$behave1<1]<-NA
 
-anes20$auth<-(anes20$V202266+anes20$V202267+anes20$V202268+anes20$V202269)/4
+anes20$resp1[anes20$resp1>3]<-NA
+anes20$manners1[anes20$manners1>3]<-NA
+anes20$obed1[anes20$obed1>3]<-NA
+anes20$behave1[anes20$behave1>3]<-NA
+
+#making 0-1
+anes20$resp1<-ifelse(anes20$resp1==2,1,0) 
+anes20$manners1<-ifelse(anes20$manners1==2,1,0) 
+anes20$obed1<-ifelse(anes20$obed1==1,1,0) 
+anes20$behave1<-ifelse(anes20$behave1==2,1,0) 
+
+anes20$auth<-(anes20$resp1+anes20$manners1+anes20$obed1+anes20$behave1)/4
 
 ##variable anes20$auth is the 0-1, 0 being fluid and 1 being fixed
 
 #making variable PUBASST 0-1
-table(anes20$V202563)
-anes20$V202563[anes20$V202563<1]<-NA
-anes20$V202563<-std01(anes20$V202563)
-anes20$pubasst1<-ifelse(anes20$V202563==1, 0, 1)
+table(anes20$pubasst)
+anes20$pubasst<-anes20$V202563
+anes20$pubasst[anes20$pubasst<1]<-NA
+anes20$pubasst<-std01(anes20$pubasst)
+anes20$pubasst1<-ifelse(anes20$pubasst==1, 0, 1)
 table(anes20$pubasst1)
-
-
 
 #eco pref
 ## services and spending
