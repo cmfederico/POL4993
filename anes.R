@@ -22,6 +22,7 @@ library(tidyverse)
 library(interactions)
 library(corrplot)
 library(Hmisc)
+library(dplyr)
 
 std01<-function(x){
   min.x<-min(x, na.rm=T)
@@ -106,3 +107,5 @@ ineqredstr<-anes20$ineqredstr
 ecopref<-cbind.data.frame(anes20$rserv1, anes20$rhel1,anes20$rjob1,anes20$ineqredstr)
 ecocorr<-rcorr(as.matrix(ecopref), type="pearson")
 corrplot(ecocorr$r)
+
+psych::alpha(ecopref)
