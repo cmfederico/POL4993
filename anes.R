@@ -79,7 +79,7 @@ anes20$obed1<-ifelse(anes20$obed1==1,1,0)
 anes20$behave1<-ifelse(anes20$behave1==2,1,0) 
 
 anes20$auth<-(anes20$resp1+anes20$manners1+anes20$obed1+anes20$behave1)/4
-
+auth<-cbind.data.frame(anes20$resp1,anes20$manners1,anes20$obed1,anes20$behave1)
 ##variable anes20$auth is the 0-1, 0 being fluid and 1 being fixed
 
 #making variable PUBASST 0-1
@@ -108,4 +108,6 @@ ecopref<-cbind.data.frame(anes20$rserv1, anes20$rhel1,anes20$rjob1,anes20$ineqre
 ecocorr<-rcorr(as.matrix(ecopref), type="pearson")
 corrplot(ecocorr$r)
 
+##alpha
+psych::alpha(auth)
 psych::alpha(ecopref)
