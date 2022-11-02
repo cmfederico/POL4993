@@ -83,6 +83,7 @@ auth<-cbind.data.frame(anes20$resp1,anes20$manners1,anes20$obed1,anes20$behave1)
 ##variable anes20$auth is the 0-1, 0 being fluid and 1 being fixed
 
 #making variable PUBASST 0-1
+# 1 --> did not receive public assistance; 0 = did receive assistance.
 table(anes20$pubasst)
 anes20$pubasst<-anes20$V202563
 anes20$pubasst[anes20$pubasst<1]<-NA
@@ -100,14 +101,30 @@ rhel1<-anes20$rhel1
 ## guaranteed jobs
 anes20$rjob1<-ifelse(anes20$V201255>0 & anes20$V201255<8,((anes20$V201255-1)/6),NA)
 rjob1<-anes20$rjob1
-##favor/oppose government trying to reduce income inequality
-anes20$ineqredstr<-ifelse(anes20$V202255x>0, (7-anes20$V202255x)/6, NA)
+## favor/oppose government trying to reduce income inequality
+## this is the correct 'reduce inequality' item
+anes20$ineqredstr<-ifelse(anes20$V202259x>0, (anes20$V202259x-1)/6, NA)
 ineqredstr<-anes20$ineqredstr
+
+## more vs less government in general
+## this is NOT the reduce inequality item, but just asks about general size of
+## of government. It might be useful to us, though.
+anes20$rgov1<-ifelse(anes20$V202255x>0, (6-anes20$V202255x)/5, NA)
+rgov1<-anes20$rgov1
 
 ecopref<-cbind.data.frame(anes20$rserv1, anes20$rhel1,anes20$rjob1,anes20$ineqredstr)
 ecocorr<-rcorr(as.matrix(ecopref), type="pearson")
 corrplot(ecocorr$r)
 
-##alpha
+#### reliabilities -- I've provided some alternate code for getting alphas
+
+## alpha: authoritarianism
 psych::alpha(auth)
+psych::alpha(with(anes20, cbind(resp1, manners1, obed1, behave1)))
+
+## alpha: econ preferences 1
 psych::alpha(ecopref)
+psych::alpha(with(anes20, cbind(rserv1, rhel1, rjob1, ineqredstr)))
+
+## alpha: econ preferences 2 (with extra more vs less government in general item)
+psych::alpha(with(anes20, cbind(rserv1, rhel1, rjob1, ineqredstr, rgov1)))
